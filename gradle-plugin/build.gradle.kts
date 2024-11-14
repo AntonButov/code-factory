@@ -3,14 +3,14 @@ plugins {
     `java-gradle-plugin`
 }
 
-group = "com.code.factory"
-version = "1.0.0"
+group = "com.gradle.plugin"
+version = "1.0-SNAPSHOT"
 
 gradlePlugin {
     plugins {
         create("graldePlugin") {
-            id = "com.code.factory.plugin"
-            implementationClass = "com.code.factory.gradle.plugin.Plugin"
+            id = "com.gradle.plugin"
+            implementationClass = "com.gradle.plugin.CodeFactoryPlugin"
         }
     }
 }
