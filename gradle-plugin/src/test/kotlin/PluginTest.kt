@@ -8,7 +8,7 @@ class PluginTest {
     fun `plugin test`() {
         val project = ProjectBuilder.builder().build()
         project.pluginManager.apply("com.gradle.plugin")
-
+        project.tasks.forEach { println(it.name) }
         assertNotNull(project.tasks.findByName("codeFactoryTask"))
     }
 }
