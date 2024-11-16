@@ -1,0 +1,15 @@
+plugins {
+    id("org.jlleitschuh.gradle.ktlint") version "11.5.1"
+}
+
+repositories {
+    mavenCentral()
+    google()
+}
+
+ktlint {
+    version.set("0.50.0") // Последняя версия Ktlint
+    android.set(false)    // Если проект не для Android
+    outputToConsole.set(true)
+    coloredOutput.set(true)
+}
