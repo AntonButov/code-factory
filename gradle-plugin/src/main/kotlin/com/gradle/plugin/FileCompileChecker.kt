@@ -8,7 +8,7 @@ import com.tschuchort.compiletesting.KotlinCompilation.Result as JvmCompilationR
 class FileCompileChecker {
 
     fun isFileCompile(code: String): Boolean {
-       val result = compile(code)
+        val result = compile(code)
         return result.exitCode == KotlinCompilation.ExitCode.OK
     }
 

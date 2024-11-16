@@ -7,7 +7,6 @@ import java.io.File
 class CodeFactoryPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         project.tasks.register("codeFactoryTask") {
-
             it.description = "code factory task"
             it.doLast {
                 println("Generating file...")

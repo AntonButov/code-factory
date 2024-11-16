@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "2.0.20" // todo do same
+    kotlin("jvm")
     `java-gradle-plugin`
 }
 
@@ -13,10 +13,6 @@ gradlePlugin {
             implementationClass = "com.gradle.plugin.CodeFactoryPlugin"
         }
     }
-}
-
-repositories {
-    mavenCentral()
 }
 
 dependencies {

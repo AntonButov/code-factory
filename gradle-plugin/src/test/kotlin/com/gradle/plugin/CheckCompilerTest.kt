@@ -1,6 +1,7 @@
 package com.gradle.plugin
 
-import kotlin.test.*
+import kotlin.test.BeforeTest
+import kotlin.test.Test
 import kotlin.test.assertTrue
 
 class CheckCompilerTest {
