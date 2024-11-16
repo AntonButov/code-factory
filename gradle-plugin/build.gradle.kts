@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "2.0.20"
+    kotlin("jvm") version "2.0.20" // todo do same
     `java-gradle-plugin`
 }
 
@@ -21,6 +21,9 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
+
+    implementation(kotlin("stdlib"))
+    implementation("com.github.tschuchortdev:kotlin-compile-testing:1.5.0")
 }
 
 tasks.test {
