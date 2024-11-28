@@ -1,6 +1,7 @@
 plugins {
-    kotlin("jvm") version "2.0.20" // todo do same
+    kotlin("jvm")
     `java-gradle-plugin`
+    id ("maven-publish")
 }
 
 group = "com.gradle.plugin"
@@ -15,8 +16,8 @@ gradlePlugin {
     }
 }
 
-repositories {
-    mavenCentral()
+tasks.named("test") {
+    dependsOn("publishToMavenLocal")
 }
 
 dependencies {
