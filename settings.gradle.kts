@@ -23,3 +23,4 @@ rootProject.name = "code-factory"
 include("bridge")
 include("gradle-plugin")
 include("ksp-processor")
+include("utils")

@@ -1,4 +1,5 @@
-import com.google.devtools.ksp.processing.CodeGenerator
+package utils
+
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.processing.SymbolProcessor
