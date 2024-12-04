@@ -9,8 +9,11 @@ group = "com.code.factory"
 version = "0.0.1"
 
 dependencies {
+    implementation(project(":utils"))
+
     implementation(kotlin("stdlib"))
     implementation(libs.kotlin.kspApi)
+
     testImplementation(kotlin("test"))
     testImplementation(libs.tschuchortdev.testing.ksp)
 }

@@ -1,10 +1,12 @@
 import com.code.factory.ksp.KspProcessor
 import com.code.factory.usescases.getInterfacesWithOutImplementation
 import com.tschuchort.compiletesting.KotlinCompilation
+import utils.compilation
+import utils.compilationForAssertations
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class KspProcessorTest {
+class FindInterfacesTest {
 
     @Test
     fun `simple file should compile`() {
@@ -16,7 +18,7 @@ class KspProcessorTest {
             }
             """
 
-        val result = compilation(source, KspProcessor).compile()
+        val result = compilation(source, processorProvider = KspProcessor).compile()
 
         assertEquals(KotlinCompilation.ExitCode.OK, result.exitCode)
     }
@@ -43,18 +45,12 @@ class KspProcessorTest {
 
     @Test
     fun `should find two interfaces`() {
-        val result = compilation(
-            source = testSource, TestKspProcessor.provider(
-                assertAction = {
-                    val interfaceNames = getInterfacesWithOutImplementation().map {
-                        it.qualifiedName!!.getShortName()
-                    }.toList()
-                    assertEquals(listOf("TwoInterface"), interfaceNames)
-                    assertEquals("somePackage", getInterfacesWithOutImplementation().first().packageName.getShortName())
-                }
-            )
-        ).compile()
-        assertEquals(KotlinCompilation.ExitCode.OK, result.exitCode)
+        compilationForAssertations(testSource) {
+            val interfaceNames = getInterfacesWithOutImplementation().map {
+                it.qualifiedName!!.getShortName()
+            }.toList()
+            assertEquals(listOf("TwoInterface"), interfaceNames)
+            assertEquals("somePackage", getInterfacesWithOutImplementation().first().packageName.getShortName())
+        }
     }
-
 }
