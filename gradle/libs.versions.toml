@@ -12,6 +12,9 @@ zipline = "1.17.0"
 coil = "3.0.0-rc01"
 okio = "3.9.1"
 tschuchortdev = "1.5.0"
+kotest = "5.6.2"
+mockk = "1.13.5"
+kotestRunnerJunit5Jvm = "5.9.0"
 
 [libraries]
 kotlin-compiler = { module = "org.jetbrains.kotlin:kotlin-compiler", version.ref = "kotlin" }
@@ -29,6 +32,9 @@ kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutine
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
+
+kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk"}
 
 kotlinx-binaryCompatibilityValidator = "org.jetbrains.kotlinx:binary-compatibility-validator:0.16.3"
 
@@ -98,3 +104,4 @@ googleJavaFormat = "com.google.googlejavaformat:google-java-format:1.24.0"
 poko-gradlePlugin = "dev.drewhamilton.poko:poko-gradle-plugin:0.17.1"
 
 lint-core = { module = "com.android.tools.lint:lint", version.ref = "lint" }
+kotest-runner-junit5-jvm = { group = "io.kotest", name = "kotest-runner-junit5-jvm", version.ref = "kotestRunnerJunit5Jvm" }
