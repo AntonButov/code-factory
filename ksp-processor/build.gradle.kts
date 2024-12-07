@@ -10,12 +10,22 @@ version = "0.0.1"
 
 dependencies {
     implementation(project(":utils"))
+    implementation(project(":bridge"))
 
     implementation(kotlin("stdlib"))
     implementation(libs.kotlin.kspApi)
+    implementation(libs.kotlinx.coroutines.core)
 
     testImplementation(kotlin("test"))
     testImplementation(libs.tschuchortdev.testing.ksp)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.kotest.assertions)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotest.runner.junit5.jvm)
+}
+
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
 }
 
 tasks.named("test") {
