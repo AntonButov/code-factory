@@ -1,7 +1,7 @@
 package com.code.factory.ksp
 
 import com.code.factory.Bridge
-import com.code.factory.BridgeFactory
+import com.code.factory.bridge
 import com.google.devtools.ksp.processing.*
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSVisitorVoid
@@ -23,11 +23,10 @@ class KspProcessor(
 
     inner class BuilderVisitor : KSVisitorVoid() {
     }
+}
 
-    companion object : SymbolProcessorProvider {
-        override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor {
-            return KspProcessor(environment.codeGenerator, environment.logger, BridgeFactory.create())
-        }
-
+fun kspProcessorProvider(bridge: Bridge = bridge()) = object: SymbolProcessorProvider {
+    override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor {
+        return KspProcessor(environment.codeGenerator, environment.logger, bridge)
     }
 }

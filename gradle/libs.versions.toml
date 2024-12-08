@@ -15,6 +15,7 @@ tschuchortdev = "1.5.0"
 kotest = "5.6.2"
 mockk = "1.13.5"
 kotestRunnerJunit5Jvm = "5.9.0"
+openaiKotlinBom = "3.8.2"
 
 [libraries]
 kotlin-compiler = { module = "org.jetbrains.kotlin:kotlin-compiler", version.ref = "kotlin" }
@@ -76,6 +77,11 @@ jetbrains-compose-runtime-saveable = { module = "org.jetbrains.compose.runtime:r
 jetbrains-compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "jbCompose" }
 jetbrains-compose-ui-tooling = { module = "org.jetbrains.compose.ui:ui-tooling", version.ref = "jbCompose" }
 jetbrains-compose-ui-tooling-preview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "jbCompose" }
+
+openai-kotlin-bom = { module = "com.aallam.openai:openai-client-bom", version.ref = "openaiKotlinBom"}
+openai-kotlin = { module = "com.aallam.openai:openai-client"}
+
+ktor = { module = "io.ktor:ktor-client-okhttp" }
 
 androidGradlePlugin = { module = "com.android.tools.build:gradle", version = "8.7.0" }
 kotlinPoet = { module = "com.squareup:kotlinpoet", version = "1.18.1" }
