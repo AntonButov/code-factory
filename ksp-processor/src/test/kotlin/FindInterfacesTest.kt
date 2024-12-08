@@ -1,6 +1,9 @@
+import com.code.factory.Bridge
 import com.code.factory.ksp.KspProcessor
+import com.code.factory.ksp.kspProcessorProvider
 import com.code.factory.usescases.getInterfacesWithOutImplementation
 import com.tschuchort.compiletesting.KotlinCompilation
+import io.mockk.mockk
 import utils.compilation
 import utils.compilationForAssertations
 import kotlin.test.Test
@@ -10,6 +13,7 @@ class FindInterfacesTest {
 
     @Test
     fun `simple file should compile`() {
+        val bridge = mockk<Bridge>(relaxed = true)
         val source = """
             package test
 
@@ -18,7 +22,7 @@ class FindInterfacesTest {
             }
             """
 
-        val result = compilation(source, processorProvider = KspProcessor).compile()
+        val result = compilation(source, processorProvider = kspProcessorProvider(bridge)).compile()
 
         assertEquals(KotlinCompilation.ExitCode.OK, result.exitCode)
     }

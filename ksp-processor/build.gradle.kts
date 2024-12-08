@@ -1,3 +1,6 @@
+import org.gradle.kotlin.dsl.implementation
+import org.gradle.kotlin.dsl.runtimeOnly
+
 plugins {
     id("com.google.devtools.ksp") version "2.0.20-1.0.25"
     kotlin("jvm")
