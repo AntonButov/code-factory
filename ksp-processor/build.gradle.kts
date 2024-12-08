@@ -13,6 +13,7 @@ version = "0.0.1"
 
 dependencies {
     implementation(project(":utils"))
+    implementation(project(":writer"))
     implementation(project(":bridge"))
 
     implementation(kotlin("stdlib"))

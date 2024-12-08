@@ -1,4 +1,4 @@
-import com.code.factory.usescases.getAllDeclarations
+import com.code.factory.AllDeclarationFinderImpl
 import utils.compilationForAssertations
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -21,7 +21,7 @@ class FindTypesTest {
         """.trimIndent()
 
         compilationForAssertations(typeASource, mainCode) {
-            assertEquals(listOf("A"), getAllDeclarations().map { it.toString() })
+            assertEquals(listOf("A"), AllDeclarationFinderImpl().getAllDeclaration(this).map { it.toString() })
         }
     }
 

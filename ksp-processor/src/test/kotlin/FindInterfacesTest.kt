@@ -1,7 +1,6 @@
 import com.code.factory.Bridge
-import com.code.factory.ksp.KspProcessor
+import com.code.factory.interfaceFinder
 import com.code.factory.ksp.kspProcessorProvider
-import com.code.factory.usescases.getInterfacesWithOutImplementation
 import com.tschuchort.compiletesting.KotlinCompilation
 import io.mockk.mockk
 import utils.compilation
@@ -41,7 +40,7 @@ class FindInterfacesTest {
             }
          }
         
-        interface TwoInterface {
+        interface InterfaceWithOutImplementation {
             fun one()
         }
         
@@ -50,11 +49,15 @@ class FindInterfacesTest {
     @Test
     fun `should find two interfaces`() {
         compilationForAssertations(testSource) {
-            val interfaceNames = getInterfacesWithOutImplementation().map {
+            val interfaceFinder = interfaceFinder()
+            val interfaceNames = interfaceFinder.getInterfacesWithOutImplementation(this).map {
                 it.qualifiedName!!.getShortName()
             }.toList()
-            assertEquals(listOf("TwoInterface"), interfaceNames)
-            assertEquals("somePackage", getInterfacesWithOutImplementation().first().packageName.getShortName())
+            assertEquals(listOf("InterfaceWithOutImplementation"), interfaceNames)
+            assertEquals(
+                "somePackage",
+                interfaceFinder.getInterfacesWithOutImplementation(this).first().packageName.getShortName()
+            )
         }
     }
 }

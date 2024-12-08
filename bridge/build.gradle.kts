@@ -7,7 +7,6 @@ version = "1.0-SNAPSHOT"
 
 dependencies {
     implementation(platform(libs.openai.kotlin.bom))
-
     implementation (libs.openai.kotlin)
     runtimeOnly (libs.ktor)
 
