@@ -2,12 +2,12 @@ package com.code.factory.ksp
 
 import com.code.factory.AllDeclarationFinder
 import com.code.factory.Bridge
-import com.code.factory.CodeResolver
+import com.code.factory.coderesolver.CodeResolver
 import com.code.factory.InterfaceFinder
 import com.code.factory.Writer
 import com.code.factory.allDeclarationFinder
 import com.code.factory.bridge
-import com.code.factory.codeResolver
+import com.code.factory.coderesolver.codeResolver
 import com.code.factory.interfaceFinder
 import com.code.factory.writer
 import com.google.devtools.ksp.processing.*
@@ -49,7 +49,7 @@ fun kspProcessorProvider(
     override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor {
         return KspProcessor(
             logger = environment.logger,
-            writer = writer(),
+            writer = writer(environment.codeGenerator),
             allDeclarationFinder = allDeclarationFinder,
             interfaceFinder = interfaceFinder,
             codeResolver = codeResolver,

@@ -16,6 +16,7 @@ kotest = "5.6.2"
 mockk = "1.13.5"
 kotestRunnerJunit5Jvm = "5.9.0"
 openaiKotlinBom = "3.8.2"
+kotlinPoet = "2.0.0"
 
 [libraries]
 kotlin-compiler = { module = "org.jetbrains.kotlin:kotlin-compiler", version.ref = "kotlin" }
@@ -84,7 +85,8 @@ openai-kotlin = { module = "com.aallam.openai:openai-client"}
 ktor = { module = "io.ktor:ktor-client-okhttp" }
 
 androidGradlePlugin = { module = "com.android.tools.build:gradle", version = "8.7.0" }
-kotlinPoet = { module = "com.squareup:kotlinpoet", version = "1.18.1" }
+kotlinPoet = { module = "com.squareup:kotlinpoet", version.ref = "kotlinPoet" }
+kotlinPoet-ksp = { module = "com.squareup:kotlinpoet-ksp", version.ref = "kotlinPoet" }
 clikt = "com.github.ajalt.clikt:clikt:5.0.1"
 junit = { module = "junit:junit", version = "4.13.2" }
 testParameterInjector = { module = "com.google.testparameterinjector:test-parameter-injector", version = "1.18" }
