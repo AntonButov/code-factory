@@ -1,6 +1,6 @@
 import com.code.factory.AllDeclarationFinder
 import com.code.factory.Bridge
-import com.code.factory.CodeResolver
+import com.code.factory.coderesolver.CodeResolver
 import com.code.factory.InterfaceFinder
 import com.code.factory.ksp.KspProcessor
 import com.google.devtools.ksp.processing.Resolver
