@@ -1,6 +1,8 @@
 package com.code.factory
 
 import java.io.File
+import java.nio.file.Files
+import kotlin.io.path.Path
 
 object File {
 
@@ -27,4 +29,9 @@ object File {
     fun removeTempFile(file: String): Boolean = File(TEMP_DIR, file).delete()
 
     fun isTempFileExist(file: String): Boolean = File(TEMP_DIR, file).exists()
+
+    fun fileCode(fileName: String): String = runCatching {
+        val path = Path(fileName)
+        Files.readString(path)
+    }.getOrNull() ?: error("Code not found.")
 }

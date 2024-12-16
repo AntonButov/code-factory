@@ -2,7 +2,9 @@ package com.code.factory.coderesolver
 
 import com.google.devtools.ksp.symbol.KSDeclaration
 import java.nio.file.Files
+import kotlin.collections.first
 import kotlin.io.path.Path
+import kotlin.runCatching
 
 internal class CodeResolverImpl: CodeResolver {
     override fun getCodeString(vararg declaration: KSDeclaration): String {

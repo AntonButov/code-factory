@@ -3,7 +3,7 @@ import com.google.devtools.ksp.getClassDeclarationByName
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.equals.shouldBeEqual
 import io.kotest.matchers.string.shouldContain
-import utils.compilationForAssertations
+import com.code.factory.compilation.compilationForAssertations
 
 class CodeResolverTest: StringSpec({
 
@@ -15,8 +15,8 @@ class CodeResolverTest: StringSpec({
             
         """.trimIndent()
         val codeResolver = codeResolver()
-        compilationForAssertations(sourceCode) {
-            val myClassDeclaration = getClassDeclarationByName(getClassDeclarationByName("MyClass")!!.qualifiedName!!)
+        compilationForAssertations(sourceCode) { resolver ->
+            val myClassDeclaration = resolver.getClassDeclarationByName(resolver.getClassDeclarationByName("MyClass")!!.qualifiedName!!)
             "MyClass" shouldBeEqual myClassDeclaration!!.qualifiedName!!.getShortName()
             val resolvedCode = codeResolver.getCodeString(myClassDeclaration)
             sourceCode shouldContain resolvedCode

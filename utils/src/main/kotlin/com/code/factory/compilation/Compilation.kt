@@ -1,24 +1,34 @@
-package utils
+package com.code.factory.compilation
 
 import com.google.devtools.ksp.processing.Resolver
+import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
 import com.google.devtools.ksp.processing.SymbolProcessorProvider
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile
+import com.tschuchort.compiletesting.kspWithCompilation
 import com.tschuchort.compiletesting.symbolProcessorProviders
-import kotlin.test.assertEquals
+import java.io.File
 
 
 fun compilationForAssertations(
+    sourceFirst: String,
     vararg sources: String,
-    assertAction: Resolver.() -> Unit
-) {
+    assertAction: SymbolProcessorEnvironment.(Resolver) -> Unit
+): List<File> {
     val testKspProcessorProvider = TestKspProcessor.provider(assertAction)
-    compilation(sourceFiles = sources.toList().toSomeClasses(), processorProvider = testKspProcessorProvider)
+    val sumSources = buildList {
+        add(sourceFirst)
+        sources.forEach {
+            add(it)
+        }
+    }
+    return compilation(sourceFiles = sumSources.toSomeClasses(), processorProvider = testKspProcessorProvider)
         .compile()
         .also {
-            if (KotlinCompilation.ExitCode.OK == it.exitCode) return
+            if (KotlinCompilation.ExitCode.OK == it.exitCode) return emptyList()
             error(it.messages)
         }
+        .generatedFiles.toList()
 }
 
 private fun List<String>.toSomeClasses(): List<SourceFile> = mapIndexed { index, name -> name.toSomeClass(index) }

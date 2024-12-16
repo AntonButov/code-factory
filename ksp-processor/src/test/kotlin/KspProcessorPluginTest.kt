@@ -7,8 +7,6 @@ import java.io.File
 import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 
-
-
 class KspProcessorPluginTest {
 
     @TempDir
