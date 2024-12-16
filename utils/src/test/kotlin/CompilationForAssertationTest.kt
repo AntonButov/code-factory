@@ -1,5 +1,4 @@
-package utils
-
+import com.code.factory.compilation.compilationForAssertations
 import org.junit.jupiter.api.assertThrows
 import kotlin.test.Test
 import kotlin.test.assertTrue
@@ -23,7 +22,7 @@ class CompilationForAssertationTest {
     @Test
     fun `incorrect code should not compile`() {
         assertThrows<IllegalStateException> {
-            compilationForAssertations {
+            compilationForAssertations("") {
                 error("My error.")
             }
         }

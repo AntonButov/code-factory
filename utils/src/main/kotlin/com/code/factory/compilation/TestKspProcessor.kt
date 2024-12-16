@@ -1,4 +1,4 @@
-package utils
+package com.code.factory.compilation
 
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
@@ -8,19 +8,19 @@ import com.google.devtools.ksp.processing.SymbolProcessorProvider
 import com.google.devtools.ksp.symbol.KSAnnotated
 
 class TestKspProcessor(
-    val logger: KSPLogger, // for research
-    val assertAction: Resolver.() -> Unit
+    val environment: SymbolProcessorEnvironment,
+    val assertAction: SymbolProcessorEnvironment.(Resolver) -> Unit
 ): SymbolProcessor {
     override fun process(resolver: Resolver): List<KSAnnotated> {
-        assertAction(resolver)
+            assertAction(environment, resolver)
         return emptyList()
     }
 
     companion object {
-        fun provider(assertAction: Resolver.() -> Unit): SymbolProcessorProvider {
+        fun provider(assertAction: SymbolProcessorEnvironment.(Resolver) -> Unit): SymbolProcessorProvider {
             return object : SymbolProcessorProvider {
                 override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor {
-                    return TestKspProcessor(environment.logger, assertAction)
+                    return TestKspProcessor(environment, assertAction)
                 }
             }
         }

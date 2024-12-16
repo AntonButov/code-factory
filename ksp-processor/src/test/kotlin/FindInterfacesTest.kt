@@ -1,10 +1,7 @@
 import com.code.factory.Bridge
+import com.code.factory.compilation.compilationForAssertations
 import com.code.factory.interfaceFinder
-import com.code.factory.ksp.kspProcessorProvider
-import com.tschuchort.compiletesting.KotlinCompilation
 import io.mockk.mockk
-import utils.compilation
-import utils.compilationForAssertations
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -21,9 +18,7 @@ class FindInterfacesTest {
             }
             """
 
-        val result = compilation(source, processorProvider = kspProcessorProvider(bridge)).compile()
-
-        assertEquals(KotlinCompilation.ExitCode.OK, result.exitCode)
+        compilationForAssertations(source) {}
     }
 
     private val testSource = """
@@ -48,15 +43,15 @@ class FindInterfacesTest {
 
     @Test
     fun `should find two interfaces`() {
-        compilationForAssertations(testSource) {
+        compilationForAssertations(testSource) { resolver ->
             val interfaceFinder = interfaceFinder()
-            val interfaceNames = interfaceFinder.getInterfacesWithOutImplementation(this).map {
+            val interfaceNames = interfaceFinder.getInterfacesWithOutImplementation(resolver).map {
                 it.qualifiedName!!.getShortName()
             }.toList()
             assertEquals(listOf("InterfaceWithOutImplementation"), interfaceNames)
             assertEquals(
                 "somePackage",
-                interfaceFinder.getInterfacesWithOutImplementation(this).first().packageName.getShortName()
+                interfaceFinder.getInterfacesWithOutImplementation(resolver).first().packageName.getShortName()
             )
         }
     }

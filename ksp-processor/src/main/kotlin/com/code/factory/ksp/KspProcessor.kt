@@ -49,7 +49,7 @@ fun kspProcessorProvider(
     override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor {
         return KspProcessor(
             logger = environment.logger,
-            writer = writer(),
+            writer = writer(environment.codeGenerator),
             allDeclarationFinder = allDeclarationFinder,
             interfaceFinder = interfaceFinder,
             codeResolver = codeResolver,
