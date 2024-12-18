@@ -32,6 +32,8 @@ class KspProcessor(
                 val stringCode = bridge.getCode(context, interfaceWithOutImplementation.toString())
                 writer.write(stringCode, interfaceWithOutImplementation)
             }
+            logger.error("111111")
+            println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         }
         return emptyList()
     }

@@ -9,7 +9,6 @@ class FindInterfacesTest {
 
     @Test
     fun `simple file should compile`() {
-        val bridge = mockk<Bridge>(relaxed = true)
         val source = """
             package test
 

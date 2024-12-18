@@ -7,15 +7,6 @@ interface Bridge {
     suspend fun getCode(context: String, interfaceForRealisation: String): String
 }
 
-internal class BridgeImpl(
-    private val openAi: OpenAiService
-): Bridge {
-
-    override suspend fun getCode(context: String, interfaceForRealisation: String): String {
-        return openAi.getCode(context, interfaceForRealisation)
-    }
-}
-
 fun bridge(): Bridge {
     val apiKey = loadLocalProperties().getProperty("API_KEY")
     return BridgeImpl(openAiService(apiKey))
