@@ -1,10 +1,11 @@
-package com.code.factory
+package com.code.factory.bridge
 
 import com.aallam.openai.api.chat.ChatCompletionRequest
 import com.aallam.openai.api.chat.ChatMessage
 import com.aallam.openai.api.chat.ChatRole
 import com.aallam.openai.api.model.ModelId
 import com.aallam.openai.client.OpenAI
+import kotlin.collections.first
 
 private const val SYSTEM = "You are Kotlin developer."
 private const val MODEL = "gpt-4"
@@ -17,7 +18,6 @@ internal class OpenAiServiceImpl(
     private val openAi: OpenAI
 ): OpenAiService {
     override suspend fun getCode(context: String, interfaceForCode: String): String {
-        println("\n> Create chat completions...")
         val chatCompletionRequest = ChatCompletionRequest(
             model = ModelId(MODEL),
             messages = listOf(

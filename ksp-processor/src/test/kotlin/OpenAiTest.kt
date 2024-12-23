@@ -1,6 +1,6 @@
 import com.aallam.openai.api.chat.ChatCompletion
 import com.aallam.openai.client.OpenAI
-import com.code.factory.OpenAiServiceImpl
+import com.code.factory.bridge.OpenAiServiceImpl
 import io.kotest.core.spec.style.StringSpec
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -12,7 +12,7 @@ class OpenAiTest : StringSpec({
     runTest {
         "when get code invoked the call should to delegate to OpenAi" {
             val chatCompletion = mockk<ChatCompletion>().apply {
-                every { choices } returns listOf(mockk(relaxed = true))
+                every { choices } returns kotlin.collections.listOf(mockk(relaxed = true))
             }
             val openAi = mockk<OpenAI>().apply {
                 coEvery { chatCompletion(any()) } returns chatCompletion

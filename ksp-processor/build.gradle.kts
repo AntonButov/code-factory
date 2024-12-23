@@ -1,10 +1,7 @@
-import org.gradle.kotlin.dsl.implementation
-import org.gradle.kotlin.dsl.runtimeOnly
-
 plugins {
-    id("com.google.devtools.ksp") version "2.0.20-1.0.25"
+    id("com.google.devtools.ksp") version "1.9.24-1.0.20"
     kotlin("jvm")
-    id ("maven-publish")
+    id("maven-publish")
     `java-gradle-plugin`
 }
 
@@ -12,12 +9,14 @@ group = "com.code.factory"
 version = "0.0.1"
 
 dependencies {
-    implementation(project(":writer"))
-    implementation(project(":bridge"))
+    ksp(libs.autoservice.ksp)
     testImplementation(project(":utils"))
 
+    implementation(platform(libs.openai.kotlin.bom))
+    implementation (libs.openai.kotlin)
     implementation(kotlin("stdlib"))
     implementation(libs.kotlin.kspApi)
+    implementation(libs.autoservice.annotations)
     implementation(libs.kotlinx.coroutines.core)
 
     testImplementation(kotlin("test"))
@@ -54,4 +53,8 @@ tasks.test {
 }
 kotlin {
     jvmToolchain(21)
+}
+ksp {
+    arg("localPropertiesPath", rootDir.path)
+    arg("ksp.verbose", "true")
 }

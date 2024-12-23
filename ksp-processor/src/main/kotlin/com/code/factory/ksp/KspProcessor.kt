@@ -1,18 +1,15 @@
 package com.code.factory.ksp
 
 import com.code.factory.AllDeclarationFinder
-import com.code.factory.Bridge
-import com.code.factory.coderesolver.CodeResolver
 import com.code.factory.InterfaceFinder
-import com.code.factory.Writer
-import com.code.factory.allDeclarationFinder
-import com.code.factory.bridge
-import com.code.factory.coderesolver.codeResolver
-import com.code.factory.interfaceFinder
-import com.code.factory.writer
-import com.google.devtools.ksp.processing.*
+import com.code.factory.bridge.Bridge
+import com.code.factory.coderesolver.CodeResolver
+import com.code.factory.writer.Writer
+import com.google.devtools.ksp.processing.KSPLogger
+import com.google.devtools.ksp.processing.Resolver
+import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.symbol.KSAnnotated
-import com.google.devtools.ksp.symbol.KSVisitorVoid
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 
 class KspProcessor(
@@ -26,34 +23,23 @@ class KspProcessor(
     override fun process(resolver: Resolver): List<KSAnnotated> {
         runBlocking {
             val allDeclarations = allDeclarationFinder.getAllDeclaration(resolver)
-            val context = codeResolver.getCodeString(*allDeclarations.toTypedArray())
-            val interfaceWithOutImplementation = interfaceFinder.getInterfacesWithOutImplementation(resolver).toList().firstOrNull()  // todo only one yet
+            allDeclarations.takeIf { it.isNotEmpty() } ?: run {
+                logger.warn("No declaration found")
+                return@runBlocking
+            }
+            logger.warn("allDeclaration = ${allDeclarations}")
+            val context = codeResolver.getCodeString(allDeclarations)
+            val interfaceWithOutImplementation = interfaceFinder.getInterfacesWithOutImplementation(resolver).toList()
+                .firstOrNull()  // todo # 47 only one yet
             interfaceWithOutImplementation?.let {
                 val stringCode = bridge.getCode(context, interfaceWithOutImplementation.toString())
                 writer.write(stringCode, interfaceWithOutImplementation)
+            } ?: run {
+                logger.warn("No interfaces without implementation")
             }
         }
         return emptyList()
     }
 
-    inner class BuilderVisitor : KSVisitorVoid() {
-    }
 }
 
-fun kspProcessorProvider(
-    bridge: Bridge = bridge(),
-    allDeclarationFinder: AllDeclarationFinder = allDeclarationFinder(),
-    interfaceFinder: InterfaceFinder = interfaceFinder(),
-    codeResolver: CodeResolver = codeResolver()
-) = object : SymbolProcessorProvider {
-    override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor {
-        return KspProcessor(
-            logger = environment.logger,
-            writer = writer(environment.codeGenerator),
-            allDeclarationFinder = allDeclarationFinder,
-            interfaceFinder = interfaceFinder,
-            codeResolver = codeResolver,
-            bridge = bridge
-        )
-    }
-}

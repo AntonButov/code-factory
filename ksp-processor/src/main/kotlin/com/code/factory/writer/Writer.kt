@@ -1,4 +1,4 @@
-package com.code.factory
+package com.code.factory.writer
 
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.symbol.KSClassDeclaration

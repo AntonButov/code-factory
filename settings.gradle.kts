@@ -1,8 +1,7 @@
 pluginManagement {
 
     plugins {
-        id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
-        kotlin("jvm") version "2.0.20"
+        kotlin("jvm") version "1.9.24"
     }
 
     repositories {
@@ -11,6 +10,7 @@ pluginManagement {
 
 }
 
+@file:Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
     repositories {
         gradlePluginPortal()
@@ -20,8 +20,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "code-factory"
 
-include("bridge")
-include("gradle-plugin")
 include("ksp-processor")
 include("utils")
-include("writer")
+include("integration-test")

@@ -86,6 +86,7 @@ class Visitor(private val onResolveType: (KSDeclaration) -> Unit) : KSVisitor<St
     }
 
     override fun visitAnnotation(annotation: KSAnnotation, data: String) {
+        return
         if (checkVisited(annotation)) return
         emit("annotation", data)
         annotation.annotationType.accept(this, "$data  ")

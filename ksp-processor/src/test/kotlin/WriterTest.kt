@@ -1,6 +1,6 @@
 import com.code.factory.File
 import com.code.factory.compilation.compilationForAssertations
-import com.code.factory.writer
+import com.code.factory.writer.writer
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import io.kotest.core.spec.style.StringSpec
