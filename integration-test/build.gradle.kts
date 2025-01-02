@@ -1,9 +1,8 @@
 plugins {
-    id("com.google.devtools.ksp") version "2.1.0-1.0.29"
-    kotlin("jvm") version "2.1.0"
+    alias(libs.plugins.ksp)
+    kotlin("jvm")
 }
 repositories {
-    mavenLocal()
     mavenCentral()
     google()
 }
@@ -11,8 +10,9 @@ repositories {
 version = "1.0-SNAPSHOT"
 
 dependencies {
-    implementation(kotlin("stdlib", "2.1.0"))
+    implementation(kotlin("stdlib"))
     ksp(project(":ksp-processor"))
+ //   kspTest(project(":ksp-processor"))
 
     testImplementation(kotlin("test"))
     testImplementation(libs.kotlinx.coroutines.test)

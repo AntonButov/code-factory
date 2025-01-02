@@ -2,41 +2,32 @@ import com.code.factory.CompileChecker
 import com.code.factory.compileChecker
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
-import org.junit.jupiter.api.Test
-import kotlin.test.BeforeTest
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
+import io.mockk.mockk
 
-class CheckCompilerTest: StringSpec ({
+class CheckCompilerTest : StringSpec({
 
     lateinit var checker: CompileChecker
 
     beforeTest {
-        checker = compileChecker()
+        checker = compileChecker(mockk(relaxed = true))
     }
 
-    val contextClass = """
-            package com.gradle.plugin
-            
-            class SomeClass() {
-                fun someFun() {
-                    println("do work")
-                }
+    "for generation should compile" {
+        val contextClass = """
+            class Context {
+
             }
-                     """.trimIndent()
-
-    "Hello word should compile" {
-        val generatedClass = """
-            package com.gradle.plugin
-
-            class Main {
-                fun main() {
-               println("Hello World!")
-           }
-        }
+ 
+        interface ForGenerate
         """.trimIndent()
 
-        checker.isCompile(listOf("FileOfContext.kt" to contextClass), generatedClass) shouldBe true
+        val generated = """
+            class GeneratedCode(): ForGenerate {
+
+            }
+        """.trimIndent()
+
+        checker.checkCompile(contextClass, generated) shouldBe true
     }
 
     "when context define interface and gen code it implement all code should compile" {
@@ -53,7 +44,7 @@ class CheckCompilerTest: StringSpec ({
                 }
             }
         """.trimIndent()
-        checker.isCompile(listOf("FileOfContext.kt" to contextInterface), generatedClass) shouldBe true
+        checker.checkCompile(contextInterface, generatedClass) shouldBe true
     }
 
     "error compile test" {
@@ -62,7 +53,6 @@ class CheckCompilerTest: StringSpec ({
         
         """.trimIndent()
 
-        checker.isCompile(listOf("FileOfContext.kt" to contextClass), testClass) shouldBe false
+        checker.checkCompile("", testClass) shouldBe false
     }
-
 })

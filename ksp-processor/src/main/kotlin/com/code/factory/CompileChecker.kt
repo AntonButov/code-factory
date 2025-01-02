@@ -1,32 +1,31 @@
 package com.code.factory
 
+import com.google.devtools.ksp.processing.KSPLogger
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile
 import org.intellij.lang.annotations.Language
 import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
-import com.tschuchort.compiletesting.KotlinCompilation.Result as JvmCompilationResult
 
-fun compileChecker(): CompileChecker = CompileCheckerImpl()
+fun compileChecker(logger: KSPLogger): CompileChecker = CompileCheckerImpl()
 
 interface CompileChecker {
-    fun isCompile(files: List<Pair<String, String>>, code: String): Boolean
+    fun checkCompile(context: String, test: String): Boolean
 }
 
 @OptIn(ExperimentalCompilerApi::class)
-internal class CompileCheckerImpl: CompileChecker {
-
-    override fun isCompile(files: List<Pair<String, String>>, code: String): Boolean {
-        val result = runCatching {  compile(files, code) }.getOrNull() ?: return false
-        return result.exitCode == KotlinCompilation.ExitCode.OK
+internal class CompileCheckerImpl() : CompileChecker {
+    override fun checkCompile(context: String, test: String): Boolean {
+        return compile(context, test).exitCode == KotlinCompilation.ExitCode.OK
     }
 
-    private fun compile(files: List<Pair<String, String>>, @Language("kotlin") source: String): JvmCompilationResult {
+    private fun compile(@Language("kotlin") context: String, @Language("kotlin") generatedCode: String): KotlinCompilation.Result {
         return KotlinCompilation().apply {
             sources = buildList {
-                addAll(files.map { SourceFile.new(it.first, it.second) })
-                add(SourceFile.kotlin("main.kt", source))
+                add(SourceFile.kotlin("Context.kt", context))
+                add(SourceFile.kotlin("GeneratedCode.kt", generatedCode))
             }
             messageOutputStream = System.out
+            verbose = true
             inheritClassPath = true
         }.compile()
     }
