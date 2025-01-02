@@ -6,10 +6,16 @@ import kotlin.collections.first
 import kotlin.io.path.Path
 import kotlin.runCatching
 
-internal class CodeResolverImpl: CodeResolver {
-    override fun getCodeString(vararg declaration: KSDeclaration): String {
-        assert(declaration.size == 1)
-        return fileCode(declaration.first().containingFile!!.filePath)
+internal class CodeResolverImpl : CodeResolver {
+    @Throws(AssertionError::class)
+    override fun getCodeString(declaration: List<KSDeclaration>): List<Pair<KSDeclaration, String>> {
+        assert(declaration.isNotEmpty())
+        return declaration.map {
+            val code = it.containingFile?.filePath?.let {
+                fileCode(it)
+            } ?: "" // todo #46
+            it to code
+        }
     }
 
     private fun fileCode(fileName: String): String = runCatching {

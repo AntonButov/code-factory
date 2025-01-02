@@ -1,5 +1,7 @@
 # Gradle
 .gradle
+.idea
+.kotlin
 gradlew.bat
 build
 local.properties

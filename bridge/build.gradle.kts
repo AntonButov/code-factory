@@ -1,9 +1,10 @@
 plugins {
     kotlin("jvm")
+    id ("maven-publish")
 }
 
 group = "com.code.factory"
-version = "1.0-SNAPSHOT"
+version = "0.0.1"
 
 dependencies {
     implementation(platform(libs.openai.kotlin.bom))
@@ -14,6 +15,23 @@ dependencies {
     testImplementation(libs.kotest.assertions)
     testImplementation(libs.mockk)
     testImplementation(libs.kotest.runner.junit5.jvm)
+}
+
+tasks.named("test") {
+    dependsOn("publishToMavenLocal")
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            from(components["kotlin"])
+            artifactId = "code-factory-bridge"
+        }
+    }
+
+    repositories {
+        mavenLocal()
+    }
 }
 
 tasks.test {

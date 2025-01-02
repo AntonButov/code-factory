@@ -1,7 +1,7 @@
 import com.code.factory.AllDeclarationFinder
-import com.code.factory.Bridge
-import com.code.factory.coderesolver.CodeResolver
 import com.code.factory.InterfaceFinder
+import com.code.factory.bridge.Bridge
+import com.code.factory.coderesolver.CodeResolver
 import com.code.factory.ksp.KspProcessor
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.KSClassDeclaration
@@ -20,25 +20,27 @@ class KspProcessorTest : StringSpec({
     lateinit var interfaceFinder : InterfaceFinder
     lateinit var resolver: Resolver
     lateinit var types: Sequence<KSClassDeclaration>
+    lateinit var declaration: KSDeclaration
     lateinit var declarations: List<KSDeclaration>
 
     beforeTest {
         bridge = mockk(relaxed = true)
         allDeclarationFinder = mockk()
         resolver = mockk(relaxed = true)
-        declarations = listOf()
+        declaration = mockk<KSDeclaration>(relaxed = true)
+        declarations = listOf(declaration)
         every {
-            allDeclarationFinder.getAllDeclaration(resolver)
+            allDeclarationFinder.getAllDeclaration(any())
         } returns declarations
         codeResolver = mockk(relaxed = true)
         every {
-            codeResolver.getCodeString(*declarations.toTypedArray())
-        } returns "code context"
+            codeResolver.getCodeString(declarations)
+        } returns listOf(declaration to "code context")
         interfaceFinder = mockk(relaxed = true)
         kspProcessor = KspProcessor(
             logger = mockk(relaxed = true),
             writer = mockk(relaxed = true),
-            allDeclarationFinder = mockk(relaxed = true),
+            allDeclarationFinder = allDeclarationFinder,
             interfaceFinder = interfaceFinder,
             codeResolver =  codeResolver,
             bridge = bridge,
@@ -56,12 +58,12 @@ class KspProcessorTest : StringSpec({
 
     "should call CodeResolver for getting a code." {
         kspProcessor.process(resolver)
-        coVerify { codeResolver.getCodeString(*declarations.toTypedArray()) }
+        coVerify { codeResolver.getCodeString(declarations) }
     }
 
     "should call bridge get code" {
         kspProcessor.process(resolver)
-        coVerify { bridge.getCode("code context", any()) }
+        coVerify { bridge.getCode(listOf(declaration to "code context"), any()) }
     }
 
 })

@@ -1,4 +1,4 @@
-import com.code.factory.Bridge
+import com.code.factory.bridge.Bridge
 import com.code.factory.compilation.compilationForAssertations
 import com.code.factory.interfaceFinder
 import io.mockk.mockk
@@ -9,7 +9,6 @@ class FindInterfacesTest {
 
     @Test
     fun `simple file should compile`() {
-        val bridge = mockk<Bridge>(relaxed = true)
         val source = """
             package test
 
