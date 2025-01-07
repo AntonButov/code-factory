@@ -84,9 +84,8 @@ jetbrains-compose-ui-tooling = { module = "org.jetbrains.compose.ui:ui-tooling",
 jetbrains-compose-ui-tooling-preview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "jbCompose" }
 
 openai-kotlin-bom = { module = "com.aallam.openai:openai-client-bom", version.ref = "openaiKotlinBom"}
-openai-kotlin = { module = "com.aallam.openai:openai-client"}
-
-ktor = { module = "io.ktor:ktor-client-okhttp" }
+openai-client = { module = "com.aallam.openai:openai-client"}
+ktor-okhttp = { module = "io.ktor:ktor-client-okhttp" }
 
 androidGradlePlugin = { module = "com.android.tools.build:gradle", version = "8.7.0" }
 kotlinPoet = { module = "com.squareup:kotlinpoet", version.ref = "kotlinPoet" }

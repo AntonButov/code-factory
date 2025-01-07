@@ -13,11 +13,14 @@ dependencies {
     testImplementation(project(":utils"))
 
     implementation(platform(libs.openai.kotlin.bom))
-    implementation (libs.openai.kotlin)
+    implementation(libs.openai.client)
+    runtimeOnly(libs.ktor.okhttp)
+
     implementation(kotlin("stdlib"))
     implementation(libs.kotlin.kspApi)
     implementation(libs.autoservice.annotations)
     implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.tschuchortdev.testing.ksp)
 
     testImplementation(kotlin("test"))
     testImplementation(libs.kotlinx.coroutines.test)
@@ -56,5 +59,4 @@ kotlin {
 }
 ksp {
     arg("localPropertiesPath", rootDir.path)
-    arg("ksp.verbose", "true")
 }
