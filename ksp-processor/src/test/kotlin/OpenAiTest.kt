@@ -1,6 +1,7 @@
 import com.aallam.openai.api.chat.ChatCompletion
 import com.aallam.openai.client.OpenAI
 import com.code.factory.bridge.OpenAiServiceImpl
+import com.google.devtools.ksp.processing.KSPLogger
 import io.kotest.core.spec.style.StringSpec
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -17,7 +18,8 @@ class OpenAiTest : StringSpec({
             val openAi = mockk<OpenAI>().apply {
                 coEvery { chatCompletion(any()) } returns chatCompletion
             }
-            val openAiService = OpenAiServiceImpl(openAi)
+            val logger = mockk<KSPLogger>(relaxed = true)
+            val openAiService = OpenAiServiceImpl(openAi, logger)
             openAiService.getCode("context", "interface")
             coVerify { openAi.chatCompletion(any()) }
         }

@@ -1,10 +1,12 @@
 package com.code.factory.writer
 
+import com.code.factory.MainCodeWriter
 import com.google.devtools.ksp.processing.CodeGenerator
-import com.google.devtools.ksp.symbol.KSClassDeclaration
+
 
 interface Writer {
-    fun write(code: String, declaration: KSClassDeclaration)
+    fun setKotlinPath(packageName: String, name: String)
+    fun write(writerData: WriterData)
 }
 
-fun writer(codeGenerator: CodeGenerator): Writer = WriterImpl(codeGenerator)
+fun writer(storageWriter: StorageWriter, mainCodeWriter: MainCodeWriter, codeGenerator: CodeGenerator): Writer = WriterImpl(storageWriter, mainCodeWriter, codeGenerator)

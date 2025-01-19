@@ -179,6 +179,7 @@ class Visitor(private val onResolveType: (KSDeclaration) -> Unit) : KSVisitor<St
 
     override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: String) {
         if (checkVisited(classDeclaration)) return
+        onResolveType(classDeclaration)
         invokeCommonDeclarationApis(classDeclaration, data)
         emit(classDeclaration.classKind.type, data)
         for (declaration in classDeclaration.declarations) {
@@ -201,10 +202,7 @@ class Visitor(private val onResolveType: (KSDeclaration) -> Unit) : KSVisitor<St
         if (checkVisited(typeReference)) return
         typeReference.annotations.forEach{ it.accept(this, "$data  ") }
         val type = typeReference.resolve()
-        type.let {
-            emit("resolved to: ${it.declaration.qualifiedName?.asString()}", data)
-            onResolveType(it.declaration)
-        }
+        emit("resolved to: ${type.declaration.qualifiedName?.asString()}", data)
         try {
             typeReference.element?.accept(this, "$data  ")
         } catch (e: IllegalStateException) {

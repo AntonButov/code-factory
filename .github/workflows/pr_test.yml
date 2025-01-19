@@ -33,4 +33,4 @@ jobs:
             ${{ runner.os }}-gradle
 
       - name: Run tests
-        run: ./gradlew test --info
+        run: ./gradlew test

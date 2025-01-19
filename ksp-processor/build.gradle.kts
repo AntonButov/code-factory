@@ -1,6 +1,7 @@
 plugins {
-    id("com.google.devtools.ksp") version "1.9.24-1.0.20"
+    alias(libs.plugins.ksp)
     kotlin("jvm")
+    alias(libs.plugins.kotlin.seialization)
     id("maven-publish")
     `java-gradle-plugin`
 }
@@ -21,6 +22,7 @@ dependencies {
     implementation(libs.autoservice.annotations)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.tschuchortdev.testing.ksp)
+    implementation(libs.kotlinx.serialization.json)
 
     testImplementation(kotlin("test"))
     testImplementation(libs.kotlinx.coroutines.test)
@@ -36,7 +38,6 @@ tasks.withType<Test>().configureEach {
 tasks.named("test") {
     dependsOn("publishToMavenLocal")
 }
-
 
 publishing {
     publications {

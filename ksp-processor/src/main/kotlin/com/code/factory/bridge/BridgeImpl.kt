@@ -1,46 +1,90 @@
 package com.code.factory.bridge
 
-import com.google.devtools.ksp.processing.KSPLogger
+import Storage
+import com.code.factory.CompileChecker
+import com.code.factory.CompileCheckerImpl
+import com.code.factory.coderesolver.CodeResolver
+import com.code.factory.compileChecker
+import com.code.factory.writer.WriterData
+import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSDeclaration
+import removeChatComment
 
-internal class BridgeImpl(
-    private val openAi: OpenAiService,
-    private val logger: KSPLogger
-) : Bridge {
+internal class BridgeMainImpl(
+    private val storage: Storage,
+    private val codeResolver: CodeResolver,
+) : Bridge.BridgeMain {
 
-    override suspend fun getCode(
-        declarations: List<Pair<KSDeclaration, String>>,
-        interfaceForRealisation: String
-    ): String {
-        val context = declarations.joinToString("\n") { it.map() }
-        logger.logging(
-            """
-            -Request-
-            context: $context
-            interfaceForRealisation: $interfaceForRealisation
-        """""".trimIndent()
+    override fun saveAllDeclarations(
+        allDeclarations: List<KSDeclaration>,
+    ) {
+        val allDeclarationsCode = codeResolver.getCodeString(allDeclarations).joinToString("\n")
+        storage.addDeclarations(allDeclarationsCode)
+    }
+
+    override fun saveInterFaceWithOutDeclaration(interfaceWithOutImpl: KSClassDeclaration) {
+        val writerData = WriterData(
+            code = interfaceWithOutImpl.toString(),
+            packageName = interfaceWithOutImpl.packageName.asString(),
+            name = interfaceWithOutImpl.simpleName.asString()
         )
-        val response = openAi.getCode(context, interfaceForRealisation)
-        logger.logging(
-            """
-            -Response-
-            response: $response
-        """""".trimIndent()
-        )
-        return response
+        storage.setInterfaceWithOutImplementation(writerData)
     }
 }
 
-private fun Pair<KSDeclaration, String>.map(): String =
-    "${first.simpleName} : \n $second"
+internal class BridgeTestImpl(
+    private val codeResolver: CodeResolver,
+    private val storage: Storage,
+    private val openAi: OpenAiService,
+    private val compileChecker: CompileChecker
+) : Bridge.BridgeTest {
+    override suspend fun getCode(testDeclarations: List<KSDeclaration>): WriterData? {
+        val writeData = storage.getInterfaceWithOutImplementation() ?: return null
+        val testDeclarations = codeResolver.getCodeString(testDeclarations).joinToString("\n")
+        storage.addDeclarations(testDeclarations)
+        val context: String = storage.getAllDeclaration() ?: ""
+        val code = openAi.getCode(context, writeData.code).removeChatComment()
+        if (compileChecker.checkCompile(context, writeData.code)) {
+            return null // #54
+        }
+        return WriterData(
+            code = code,
+            packageName = writeData.packageName,
+            name = writeData.name
+        )
+    }
+}
 
-class BridgeImplTest(private val logger: KSPLogger) : Bridge {
-    override suspend fun getCode(declaration: List<Pair<KSDeclaration, String>>, interfaceForRealisation: String): String {
-        logger.warn("BridgeImplTest work")
-        return """
+internal class BridgeTestImplMock(
+    private val storage: Storage,
+) : Bridge.BridgeTest {
+    override suspend fun getCode(testDeclarations: List<KSDeclaration>): WriterData? {
+        val writeData = storage.getInterfaceWithOutImplementation() ?: return null
+        return WriterData(
+            code = """
             class GeneratedCode(): ForGenerate {
-            
+                override fun plus(first: Int, second: Int): Int {
+                return first + second
+                }
             }
-        """.trimIndent()
+        """.trimIndent(),
+            packageName = writeData.packageName,
+            name = writeData.name
+        )
+    }
+}
+
+internal class BridgeGeneratedImpl : Bridge.BridgeGenerated
+
+internal class BridgeMainImplMock() : Bridge.BridgeMain {
+
+    override fun saveAllDeclarations(
+        saveAllDeclarations: List<KSDeclaration>,
+    ) {
+        // do nothing
+    }
+
+    override fun saveInterFaceWithOutDeclaration(interfaceWithOutImpl: KSClassDeclaration) {
+        // do nothing
     }
 }

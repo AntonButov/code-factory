@@ -8,13 +8,12 @@ import kotlin.runCatching
 
 internal class CodeResolverImpl : CodeResolver {
     @Throws(AssertionError::class)
-    override fun getCodeString(declaration: List<KSDeclaration>): List<Pair<KSDeclaration, String>> {
+    override fun getCodeString(declaration: List<KSDeclaration>): List<String> {
         assert(declaration.isNotEmpty())
         return declaration.map {
-            val code = it.containingFile?.filePath?.let {
+            it.containingFile?.filePath?.let {
                 fileCode(it)
             } ?: "" // todo #46
-            it to code
         }
     }
 

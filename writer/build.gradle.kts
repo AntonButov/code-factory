@@ -13,7 +13,6 @@ dependencies {
     testImplementation(project(":utils"))
 
     implementation(libs.kotlin.kspApi)
-    implementation(libs.kotlinPoet.ksp)
 
     testImplementation(kotlin("test"))
     testImplementation(libs.kotest.assertions)
