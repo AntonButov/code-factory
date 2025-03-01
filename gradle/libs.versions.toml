@@ -1,7 +1,7 @@
 [versions]
 kotlin = "1.9.24"
 kotlinx-coroutines = "1.9.0"
-ksp = "1.9.24-1.0.20"
+ksp = "2.1.10-1.0.31"
 autoservice-ksp = "1.2.0"
 autoservice = "1.1.1"
 tschuchortdev = "1.6.0"
