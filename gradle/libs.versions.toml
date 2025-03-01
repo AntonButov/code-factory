@@ -1,5 +1,5 @@
 [versions]
-kotlin = "1.9.24"
+kotlin = "2.1.10"
 kotlinx-coroutines = "1.9.0"
 ksp = "1.9.24-1.0.20"
 autoservice-ksp = "1.2.0"
