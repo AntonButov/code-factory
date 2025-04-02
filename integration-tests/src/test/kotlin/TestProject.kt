@@ -1,6 +1,8 @@
 import org.gradle.testkit.runner.GradleRunner
 import java.io.File
+import kotlin.io.path.createTempDirectory
 
+fun createTestProject(name: String = "test-project"): TestProject = TestProject(createTempDirectory(prefix = name).toFile())
 class TestProject(private val root: File) {
     init {
         check(root.exists() || root.mkdirs()) { "Could not create root directory: $root" }
@@ -76,5 +78,3 @@ class TestProject(private val root: File) {
 
     fun cleanup() = root.deleteRecursively()
 }
-
-fun createTestProject(name: String = "test-project"): TestProject = TestProject(createTempDir(prefix = name))
