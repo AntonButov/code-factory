@@ -12,7 +12,7 @@ openaiKotlinBom = "4.0.1"
 vanniktech="0.31.0"
 ktlint = "12.2.0"
 dagger = "2.55"
-compilation = "2.0.0"
+compilation = "2.6.0"
 codeFactoryMaven = "1.0.1"
 
 [libraries]
